@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Конструктор технических заданий</title>
+  <style>
+    /* CSS стили */
+    /* ... */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Конструктор технических заданий</h1>
+    
+    <label for="project-template">Выберите шаблон задания:</label>
+<select id="project-template">
+  <option value="template1">Шаблон 1</option>
+  <option value="template2">Шаблон 2</option>
+  <option value="template3">Шаблон 3</option>
+</select>
+
+<label for="project-requirements">Требования к функциональности:</label>
+<textarea id="project-requirements" rows="4" placeholder="Введите требования к функциональности"></textarea>
+    
+<button id="submit-btn">Создать задание</button>
+
+<script>
+  document.getElementById('submit-btn').addEventListener('click', function() {
+    var projectName = document.getElementById('project-name').value;
+    var projectTemplate = document.getElementById('project-template').value;
+    var projectRequirements = document.getElementById('project-requirements').value;
+    
+    // тут можно выполнить необходимые действия, типо отправки данных игн
+    console.log('Название проекта:', projectName);
+    console.log('Выбранный шаблон задания:', projectTemplate);
+    console.log('Требования к функциональности:', projectRequirements);
+    
+    // а тут доп логика обработки данных
+    // ...
+  });
+
+  
+</script>
+
+<label for="section-name">Название раздела:</label>
+<input type="text" id="section-name" placeholder="Введите название раздела">
+
+<button id="add-section-btn">Добавить раздел</button>
+
+<div id="sections-container"></div>
+
+<script>
+  var sectionCounter = 1;
+  
+  document.getElementById('add-section-btn').addEventListener('click', function() {
+    var sectionName = document.getElementById('section-name').value;
+    var sectionId = 'section-' + sectionCounter;
+    
+    var sectionElement = document.createElement('div');
+    sectionElement.id = sectionId;
+    sectionElement.innerHTML = '<h3>' + sectionName + '</h3>';
+    
+    document.getElementById('sections-container').appendChild(sectionElement);
+    
+    sectionCounter++;
+    
+    // Сброс полей ввода
+    document.getElementById('section-name').value = '';
+  });
+</script>
+
+<label for="task-name">Название задачи:</label>
+<input type="text" id="task-name" placeholder="Введите название задачи">
+
+<label for="task-description">Описание задачи:</label>
+<textarea id="task-description" rows="4" placeholder="Введите описание задачи"></textarea>
+
+<button id="add-task-btn">Добавить задачу</button>
+
+<div id="tasks-container"></div>
+
+<script>
+  var taskCounter = 1;
+  
+  document.getElementById('add-task-btn').addEventListener('click', function() {
+    var taskName = document.getElementById('task-name').value;
+    var taskDescription = document.getElementById('task-description').value;
+    var taskId = 'task-' + taskCounter;
+    
+    var taskElement = document.createElement('div');
+    taskElement.id = taskId;
+    taskElement.innerHTML = '<h4>' + taskName + '</h4><p>' + taskDescription + '</p>';
+    
+    document.getElementById('tasks-container').appendChild(taskElement);
+    
+    taskCounter++;
+    
+    // Сброс полей ввода
+    document.getElementById('task-name').value = '';
+    document.getElementById('task-description').value = '';
+  });
+</script>
+
+<button id="save-btn">Сохранить задание</button>
+
+<script>
+  document.getElementById('save-btn').addEventListener('click', function() {
+    var projectName = document.getElementById('project-name').value;
+    var projectTemplate = document.getElementById('project-template').value;
+    var projectRequirements = document.getElementById('project-requirements').value;
+    
+    var sections = document.getElementById('sections-container').children;
+    var tasks = document.getElementById('tasks-container').children;
+    
+    var data = {
+      projectName: projectName,
+      projectTemplate: projectTemplate,
+      projectRequirements: projectRequirements,
+      sections: [],
+      tasks: []
+    };
+    
+    // Сохранение разделов
+    for (var i = 0; i < sections.length; i++) {
+      var sectionName = sections[i].querySelector('h3').textContent;
+      data.sections.push(sectionName);
+    }
+    
+    // Сохранение задач
+    for (var j = 0; j < tasks.length; j++) {
+      var taskName = tasks[j].querySelector('h4').textContent;
+      var taskDescription = tasks[j].querySelector('p').textContent;
+      data.tasks.push({
+        taskName: taskName,
+        taskDescription: taskDescription
+      });
+    }
+    
+    // Отправка данных на сервер
+    // Тута можно выполнить запрос AJAX или ваще другую логику для сохранения данных на сервере
+    // ...
+    
+    console.log('Данные задания:', data);
+  });
+</script>
+
+<button id="load-btn">Загрузить задание</button>
+
+<script>
+  document.getElementById('load-btn').addEventListener('click', function() {
+    // Здесь можно выполнить запрос также AJAX или другую логику для загрузки сохраненных данных задания с сервера
+    
+    // загрузка данных задания
+    var savedData = {
+      projectName: 'Название проекта',
+      projectTemplate: 'template1',
+      projectRequirements: 'Требования к функциональности',
+      sections: ['Раздел 1', 'Раздел 2'],
+      tasks: [
+        { taskName: 'Задача 1', taskDescription: 'Описание задачи 1' },
+        { taskName: 'Задача 2', taskDescription: 'Описание задачи 2' }
+      ]
+    };
+    
+    // Загрузка данных задания в интерфейс
+    document.getElementById('project-name').value = savedData.projectName;
+    document.getElementById('project-template').value = savedData.projectTemplate;
+    document.getElementById('project-requirements').value = savedData.projectRequirements;
+    
+    var sectionsContainer = document.getElementById('sections-container');
+    sectionsContainer.innerHTML = ''; // Очистка существующих разделов
+    
+    // Добавление загруженных разделов
+    for (var i = 0; i < savedData.sections.length; i++) {
+      var sectionName = savedData.sections[i];
+      
+      var sectionElement = document.createElement('div');
+      sectionElement.innerHTML = '<h3>' + sectionName + '</h3>';
+      
+      sectionsContainer.appendChild(sectionElement);
+    }
+    
+    var tasksContainer = document.getElementById('tasks-container');
+    tasksContainer.innerHTML = ''; // Очистка существующих задач
+    
+    // Добавление загруженных задач
+    for (var j = 0; j < savedData.tasks.length; j++) {
+      var taskName = savedData.tasks[j].taskName;
+      var taskDescription = savedData.tasks[j].taskDescription;
+      
+      var taskElement = document.createElement('div');
+      taskElement.innerHTML = '<h4>' + taskName + '</h4><p>' + taskDescription + '</p>';
+      
+      tasksContainer.appendChild(taskElement);
+    }
+    
+    // тут доп логика для обработки загрузки задания
+    // ...
+  });
+</script>
+
+  </div>
+</body>
+</html>
